@@ -108,10 +108,11 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
    conflit avec ces transitions de hover.
 
    Variantes (classe en plus de [data-reveal]) :
-   - (aucune)        : fade + montée légère — défaut (cartes, blocs de texte)
+   - (aucune)        : fade + montée légère — blocs de texte génériques
    - .reveal-mockup   : entrée depuis la droite avec perspective 3D (preuve)
    - .reveal-zoom     : zoom-in + pulse doré — offre mise en avant
-   - .reveal-left     : glisse depuis la gauche — items FAQ
+   - .reveal-left     : glisse depuis la gauche (léger) — items FAQ
+   - .reveal-card-x   : glisse depuis la gauche (marqué) — cartes en grille
    ========================================================================== */
 [data-reveal]{
   opacity: 0;
@@ -120,6 +121,7 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 [data-reveal].reveal-mockup{ transform: perspective(1200px) translateX(90px) rotateY(22deg); }
 [data-reveal].reveal-zoom{ transform: scale(.92); }
 [data-reveal].reveal-left{ transform: translateX(-32px); }
+[data-reveal].reveal-card-x{ transform: translateX(-80px); }
 
 [data-reveal-delay="1"]{ --reveal-step: 1; }
 [data-reveal-delay="2"]{ --reveal-step: 2; }
@@ -134,6 +136,7 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 [data-reveal].reveal-mockup.is-visible{ animation-name: revealMockup; animation-duration: .9s; }
 [data-reveal].reveal-zoom.is-visible{ animation-name: revealZoomPulse; animation-duration: .95s; }
 [data-reveal].reveal-left.is-visible{ animation-name: revealLeft; animation-duration: .6s; }
+[data-reveal].reveal-card-x.is-visible{ animation-name: revealCardX; animation-duration: .75s; }
 
 /* une fois l'animation terminée (voir main.js), on la désactive : tant
    qu'une animation "forwards" tient une propriété, elle prime sur toute
@@ -166,6 +169,10 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   from{ opacity: 0; transform: translateX(-32px); }
   to{ opacity: 1; transform: translateX(0); }
 }
+@keyframes revealCardX{
+  from{ opacity: 0; transform: translateX(-80px); }
+  to{ opacity: 1; transform: translateX(0); }
+}
 @keyframes revealZoomPulse{
   0%{
     opacity: 0;
@@ -182,6 +189,22 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
     transform: scale(1);
     box-shadow: var(--shadow-gold), 0 0 50px rgba(200,130,10,.34), inset 0 1px 0 rgba(245,200,66,.25);
   }
+}
+
+/* Titres de section : révélation mot par mot (voir js/main.js pour le
+   découpage en <span class="word-reveal"> et l'IntersectionObserver dédié) */
+.word-reveal{
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(14px);
+}
+[data-reveal-words].words-revealed .word-reveal{
+  animation: revealWord .5s cubic-bezier(.22,.61,.36,1) forwards;
+  animation-delay: calc(var(--word-index, 0) * 70ms);
+}
+@keyframes revealWord{
+  from{ opacity: 0; transform: translateY(14px); }
+  to{ opacity: 1; transform: translateY(0); }
 }
 
 /* ==========================================================================

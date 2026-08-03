@@ -42,6 +42,40 @@
     });
   }
 
+  /* Titres de section : découpage en mots pour une révélation en cascade
+     au scroll (chaque mot fade-in avec un léger décalage). Texte brut
+     uniquement (pas de balises imbriquées) sur ces titres. */
+  var wordTitles = document.querySelectorAll("[data-reveal-words]");
+  wordTitles.forEach(function (title) {
+    var words = title.textContent.split(" ").filter(function (w) { return w.length; });
+    title.textContent = "";
+    words.forEach(function (word, i) {
+      var span = document.createElement("span");
+      span.className = "word-reveal";
+      span.style.setProperty("--word-index", i);
+      span.textContent = word;
+      title.appendChild(span);
+      if (i < words.length - 1) title.appendChild(document.createTextNode(" "));
+    });
+  });
+
+  if ("IntersectionObserver" in window && wordTitles.length) {
+    var wordObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("words-revealed");
+            wordObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4, rootMargin: "0px 0px -40px 0px" }
+    );
+    wordTitles.forEach(function (title) { wordObserver.observe(title); });
+  } else {
+    wordTitles.forEach(function (title) { title.classList.add("words-revealed"); });
+  }
+
   /* Scroll reveal */
   var revealEls = document.querySelectorAll("[data-reveal]");
 
