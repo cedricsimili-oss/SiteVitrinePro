@@ -95,9 +95,10 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
    ========================================================================== */
 [data-reveal]{
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity .7s ease, transform .7s ease;
-  transition-delay: calc(var(--reveal-step, 0) * 90ms);
+  transform: translateY(28px);
+  transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1);
+  transition-delay: calc(var(--reveal-step, 0) * 100ms);
+  will-change: opacity, transform;
 }
 [data-reveal-delay="1"]{ --reveal-step: 1; }
 [data-reveal-delay="2"]{ --reveal-step: 2; }
@@ -167,20 +168,27 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   justify-content: center;
   gap: 5px;
   width: 42px; height: 42px;
-  background: none; border: none;
+  background: rgba(10,10,20,.4);
+  border: 1px solid rgba(245,200,66,.3);
+  border-radius: 50%;
   padding: 0;
   z-index: 110;
+  transition: background .35s ease, border-color .35s ease;
+}
+.site-header.is-scrolled .nav-toggle{
+  background: rgba(200,130,10,.1);
+  border-color: rgba(200,130,10,.3);
 }
 .nav-toggle span{
   display: block;
   height: 2px;
-  width: 24px;
+  width: 20px;
   margin: 0 auto;
-  background: var(--text-on-dark);
+  background: #F4EFE4;
   border-radius: 2px;
   transition: transform .3s ease, opacity .3s ease, background .3s ease;
 }
-.site-header.is-scrolled .nav-toggle span{ background: var(--ink); }
+.site-header.is-scrolled .nav-toggle span{ background: #241C10; }
 .nav-toggle[aria-expanded="true"] span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
 .nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity: 0; }
 .nav-toggle[aria-expanded="true"] span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
@@ -330,8 +338,8 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: -1px;
-  height: 180px;
-  background: linear-gradient(to bottom, transparent, var(--bg-light));
+  height: 140px;
+  background: linear-gradient(to bottom, transparent, var(--bg-dark-card));
   pointer-events: none;
 }
 .hero-inner{
@@ -423,9 +431,32 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 }
 
 /* ==========================================================================
-   Proof section
+   Proof section — reste dans l'ambiance sombre/dorée du hero
    ========================================================================== */
+.proof{
+  position: relative;
+  background: linear-gradient(180deg, var(--bg-dark-card) 0%, var(--bg-dark-card-2) 55%, var(--bg-dark-card-2) 100%);
+  padding-top: 10px;
+  overflow: hidden;
+}
+.proof-glow{
+  position: absolute;
+  top: 10%; right: -10%;
+  width: 640px; height: 640px;
+  background: radial-gradient(circle, rgba(232,160,32,.16), transparent 65%);
+  pointer-events: none;
+}
+.proof::after{
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 160px;
+  background: linear-gradient(to bottom, transparent, var(--bg-light));
+  pointer-events: none;
+}
 .proof-grid{
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1fr;
   gap: 44px;
@@ -435,10 +466,14 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   .proof-grid{ grid-template-columns: 1.1fr 1fr; gap: 64px; }
 }
 
+.proof .eyebrow{ color: var(--gold-light); }
+.proof-content .section-title{ margin-bottom: 16px; color: var(--text-on-dark); }
+.proof-content .section-text{ margin-bottom: 28px; color: var(--text-beige-italic); }
+
 .mock-browser{
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 24px 50px rgba(0,0,0,.45);
   border: 1px solid var(--border-light);
   background: var(--surface);
 }
@@ -482,36 +517,56 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 .mock-browser-body p{ font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--ink-soft); }
 .mock-browser-note{ font-size: .82rem; font-style: italic; color: var(--text-beige-muted); }
 
-.proof-content .section-title{ margin-bottom: 16px; }
-.proof-content .section-text{ margin-bottom: 28px; }
-
 .quote{
+  position: relative;
   margin: 0 0 24px;
-  padding: 20px 24px;
-  border-left: 3px solid var(--gold-deep);
-  background: var(--surface);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  box-shadow: var(--shadow-soft);
+  padding: 34px 32px 28px;
+  background: linear-gradient(155deg, rgba(245,200,66,.09), rgba(20,20,32,.4) 60%);
+  border: 1px solid rgba(245,200,66,.28);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 45px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+  overflow: hidden;
+}
+.quote::before{
+  content: "\201C";
+  position: absolute;
+  top: -18px;
+  left: 18px;
+  font-family: var(--font-display);
+  font-size: 7rem;
+  font-weight: 900;
+  color: rgba(245,200,66,.16);
+  line-height: 1;
+  pointer-events: none;
 }
 .quote p{
+  position: relative;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1.1rem;
-  color: var(--ink);
-  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-on-dark);
+  margin-bottom: 14px;
 }
-.quote cite{ font-size: .88rem; color: var(--ink-soft); font-style: normal; }
+.quote cite{
+  position: relative;
+  font-size: .86rem;
+  color: var(--gold-light);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
 
 .link-arrow{
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  color: var(--orange-deep);
+  color: var(--gold-light);
   border-bottom: 2px solid transparent;
   transition: border-color .25s ease, gap .25s ease;
 }
-.link-arrow:hover{ border-color: var(--orange-deep); gap: 12px; }
+.link-arrow:hover{ border-color: var(--gold-light); gap: 12px; }
 
 /* ==========================================================================
    Cards ("Ce qui est inclus")
