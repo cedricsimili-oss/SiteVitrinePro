@@ -17,10 +17,13 @@
   --orange: #FF6B35;
   --orange-deep: #E8600A;
 
-  /* textes sur fond sombre */
-  --text-beige-italic: #C8B99A;
-  --text-beige-muted: #9A8A70;
+  /* textes sur fond sombre — dérivés du blanc chaud du hero (--text-on-dark),
+     simplement en opacité dégressive, plutôt qu'une teinte beige/kaki à part.
+     Un seul blanc, plusieurs intensités : plus sobre, plus premium, et
+     littéralement "les couleurs du hero" partout sur le site. */
   --text-on-dark: #F4EFE4;
+  --text-beige-italic: rgba(244,239,228,.82);
+  --text-beige-muted: rgba(244,239,228,.48);
 
   /* alias de section : tout le site est sombre, ces tokens pointent
      désormais vers les fonds/textes sombres (plus de section claire) */
@@ -28,7 +31,7 @@
   --bg-light-alt: #141420;
   --surface: #15151F;
   --ink: #F4EFE4;
-  --ink-soft: #C8B99A;
+  --ink-soft: rgba(244,239,228,.8);
   --border-light: rgba(200,130,10,.3);
 
   /* couleurs fixes pour le mockup navigateur (volontairement clair,
@@ -452,6 +455,21 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   .section{ padding: 64px 0; }
 }
 
+/* lueur dorée ambiante — reprend le traitement du hero sur les autres
+   sections, pour une seule et même atmosphère sombre/dorée sur tout le site */
+.section-glow{ position: relative; overflow: hidden; }
+.section-glow .container{ position: relative; z-index: 1; }
+.ambient-glow{
+  position: absolute;
+  width: 620px; height: 620px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,160,32,.11), transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+.ambient-glow-left{ top: -8%; left: -14%; }
+.ambient-glow-right{ top: 15%; right: -14%; }
+
 /* ==========================================================================
    Proof section — reste dans l'ambiance sombre/dorée du hero
    ========================================================================== */
@@ -607,7 +625,7 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 }
 
 .card{
-  background: var(--surface);
+  background: linear-gradient(165deg, rgba(245,200,66,.04), var(--surface) 55%);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
   padding: 32px 28px;
@@ -722,7 +740,7 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 .price-card{
   display: flex;
   flex-direction: column;
-  background: var(--surface);
+  background: linear-gradient(165deg, rgba(245,200,66,.04), var(--surface) 55%);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
   padding: 36px 30px;
@@ -775,12 +793,14 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
    ========================================================================== */
 .faq-list{ display: flex; flex-direction: column; gap: 14px; }
 .faq-item{
-  background: var(--surface);
+  background: linear-gradient(165deg, rgba(245,200,66,.035), var(--surface) 55%);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
   padding: 6px 24px;
   box-shadow: var(--shadow-soft);
+  transition: border-color .25s ease;
 }
+.faq-item[open]{ border-color: rgba(245,200,66,.45); }
 .faq-item summary{
   display: flex;
   align-items: center;
