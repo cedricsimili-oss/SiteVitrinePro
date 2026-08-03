@@ -625,17 +625,17 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 }
 
 .card{
-  background: linear-gradient(160deg, rgba(232,160,32,.22), rgba(200,130,10,.05) 45%, var(--surface) 75%);
-  border: 1px solid rgba(232,160,32,.4);
+  background: linear-gradient(180deg, rgba(232,160,32,.16), rgba(200,130,10,.04) 40%, var(--surface) 65%);
+  border: 2px solid var(--gold-deep);
   border-radius: var(--radius-lg);
   padding: 32px 28px;
-  box-shadow: var(--shadow-soft), 0 0 50px rgba(200,130,10,.07);
+  box-shadow: var(--shadow-soft), 0 0 34px rgba(200,130,10,.22), inset 0 1px 0 rgba(245,200,66,.15);
   transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
 .card:hover{
   transform: translateY(-6px);
-  border-color: rgba(245,200,66,.6);
-  box-shadow: 0 22px 46px rgba(0,0,0,.5), 0 0 60px rgba(200,130,10,.12);
+  border-color: var(--gold-light);
+  box-shadow: 0 22px 46px rgba(0,0,0,.5), 0 0 44px rgba(200,130,10,.32), inset 0 1px 0 rgba(245,200,66,.2);
 }
 .card-icon{
   width: 52px; height: 52px;
@@ -661,9 +661,9 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 .card p + p{ margin-top: 12px; }
 
 .card-featured{
-  border: 1.5px solid var(--gold-light);
-  background: linear-gradient(160deg, rgba(245,200,66,.3), rgba(200,130,10,.06) 45%, var(--surface) 78%);
-  box-shadow: var(--shadow-soft), 0 0 60px rgba(200,130,10,.14);
+  border: 2px solid var(--gold-light);
+  background: linear-gradient(180deg, rgba(245,200,66,.2), rgba(200,130,10,.05) 40%, var(--surface) 65%);
+  box-shadow: var(--shadow-soft), 0 0 44px rgba(200,130,10,.32), inset 0 1px 0 rgba(245,200,66,.2);
   position: relative;
 }
 @media (min-width: 700px) and (max-width: 1049px){
@@ -743,23 +743,23 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 .price-card{
   display: flex;
   flex-direction: column;
-  background: linear-gradient(160deg, rgba(232,160,32,.22), rgba(200,130,10,.05) 45%, var(--surface) 75%);
-  border: 1px solid rgba(232,160,32,.4);
+  background: linear-gradient(180deg, rgba(232,160,32,.16), rgba(200,130,10,.04) 40%, var(--surface) 65%);
+  border: 2px solid var(--gold-deep);
   border-radius: var(--radius-lg);
   padding: 36px 30px;
-  box-shadow: var(--shadow-soft), 0 0 50px rgba(200,130,10,.07);
+  box-shadow: var(--shadow-soft), 0 0 34px rgba(200,130,10,.22), inset 0 1px 0 rgba(245,200,66,.15);
   transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
 .price-card:hover{
   transform: translateY(-6px);
-  border-color: rgba(245,200,66,.6);
-  box-shadow: 0 22px 46px rgba(0,0,0,.5), 0 0 60px rgba(200,130,10,.12);
+  border-color: var(--gold-light);
+  box-shadow: 0 22px 46px rgba(0,0,0,.5), 0 0 44px rgba(200,130,10,.32), inset 0 1px 0 rgba(245,200,66,.2);
 }
 
 .price-card-featured{
   border: 2px solid var(--gold-light);
-  background: linear-gradient(160deg, rgba(245,200,66,.32), rgba(200,130,10,.06) 45%, var(--surface) 78%);
-  box-shadow: var(--shadow-gold), 0 0 70px rgba(200,130,10,.16);
+  background: linear-gradient(180deg, rgba(245,200,66,.22), rgba(200,130,10,.05) 40%, var(--surface) 65%);
+  box-shadow: var(--shadow-gold), 0 0 50px rgba(200,130,10,.34), inset 0 1px 0 rgba(245,200,66,.25);
   position: relative;
 }
 @media (min-width: 900px){
@@ -800,14 +800,14 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
    ========================================================================== */
 .faq-list{ display: flex; flex-direction: column; gap: 14px; }
 .faq-item{
-  background: linear-gradient(160deg, rgba(232,160,32,.14), rgba(200,130,10,.04) 45%, var(--surface) 75%);
-  border: 1px solid rgba(232,160,32,.35);
+  background: linear-gradient(180deg, rgba(232,160,32,.1), rgba(200,130,10,.03) 40%, var(--surface) 65%);
+  border: 2px solid var(--gold-deep);
   border-radius: var(--radius-md);
   padding: 6px 24px;
-  box-shadow: var(--shadow-soft);
-  transition: border-color .25s ease;
+  box-shadow: var(--shadow-soft), 0 0 26px rgba(200,130,10,.16);
+  transition: border-color .25s ease, box-shadow .25s ease;
 }
-.faq-item[open]{ border-color: rgba(245,200,66,.45); }
+.faq-item[open]{ border-color: var(--gold-light); box-shadow: var(--shadow-soft), 0 0 36px rgba(200,130,10,.28); }
 .faq-item summary{
   display: flex;
   align-items: center;
