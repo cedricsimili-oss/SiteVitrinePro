@@ -1,9 +1,9 @@
 /* ==========================================================================
    SiteVitrinePro — design tokens
-   Palette reprise du guide GBP : fond sombre/doré (hero) + fond clair (reste)
+   Palette reprise du guide GBP : fond sombre/doré premium sur tout le site
    ========================================================================== */
 :root{
-  /* fonds sombres (hero + accents) */
+  /* fonds sombres — base de tout le site */
   --bg-dark: #0A0A14;
   --bg-dark-card: #141420;
   --bg-dark-card-2: #111118;
@@ -22,13 +22,19 @@
   --text-beige-muted: #9A8A70;
   --text-on-dark: #F4EFE4;
 
-  /* fond clair (reste du site) */
-  --bg-light: #FBF7EF;
-  --bg-light-alt: #F5EEDC;
-  --surface: #FFFFFF;
-  --ink: #241C10;
-  --ink-soft: #5B4E3B;
-  --border-light: rgba(200,130,10,.22);
+  /* alias de section : tout le site est sombre, ces tokens pointent
+     désormais vers les fonds/textes sombres (plus de section claire) */
+  --bg-light: #0A0A14;
+  --bg-light-alt: #141420;
+  --surface: #15151F;
+  --ink: #F4EFE4;
+  --ink-soft: #C8B99A;
+  --border-light: rgba(200,130,10,.3);
+
+  /* couleurs fixes pour le mockup navigateur (volontairement clair,
+     comme une vraie capture d'écran posée sur le fond sombre) */
+  --mock-ink: #241C10;
+  --mock-ink-soft: #5B4E3B;
 
   /* typographie */
   --font-display: "Playfair Display", Georgia, serif;
@@ -39,8 +45,8 @@
   --radius-lg: 24px;
   --radius-pill: 999px;
   --container-w: 1180px;
-  --shadow-soft: 0 10px 30px rgba(36,28,16,.08);
-  --shadow-gold: 0 10px 30px rgba(200,130,10,.18);
+  --shadow-soft: 0 16px 38px rgba(0,0,0,.4);
+  --shadow-gold: 0 10px 30px rgba(200,130,10,.22);
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -91,22 +97,38 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 .skip-link:focus{ left: 0; }
 
 /* ==========================================================================
-   Scroll reveal
+   Scroll reveal — piloté par IntersectionObserver (js/main.js)
+   Utilise `animation` plutôt que `transition` : certains éléments révélés
+   (cartes, offres) ont leur propre `transition: transform` pour l'effet de
+   survol, et une seule déclaration `transition` par élément peut gagner en
+   CSS — `animation` reste totalement indépendante et ne rentre jamais en
+   conflit avec ces transitions de hover.
    ========================================================================== */
 [data-reveal]{
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1);
-  transition-delay: calc(var(--reveal-step, 0) * 100ms);
-  will-change: opacity, transform;
 }
 [data-reveal-delay="1"]{ --reveal-step: 1; }
 [data-reveal-delay="2"]{ --reveal-step: 2; }
 [data-reveal-delay="3"]{ --reveal-step: 3; }
 [data-reveal-delay="4"]{ --reveal-step: 4; }
+[data-reveal-delay="5"]{ --reveal-step: 5; }
 [data-reveal].is-visible{
+  animation: revealUp .7s cubic-bezier(.22,.61,.36,1) forwards;
+  animation-delay: calc(var(--reveal-step, 0) * 100ms);
+}
+/* une fois l'animation terminée (voir main.js), on la désactive : tant
+   qu'une animation "forwards" tient une propriété, elle prime sur toute
+   autre règle (dont :hover) — ce second état rend la main au cascade normal
+   pour que l'effet de survol des cartes fonctionne après le reveal. */
+[data-reveal].reveal-done{
+  animation: none;
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
+}
+@keyframes revealUp{
+  from{ opacity: 0; transform: translateY(28px); }
+  to{ opacity: 1; transform: translateY(0); }
 }
 
 /* ==========================================================================
@@ -121,10 +143,11 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   transition: background .35s ease, box-shadow .35s ease, padding .35s ease;
 }
 .site-header.is-scrolled{
-  background: rgba(251, 247, 239, .92);
+  background: rgba(10, 10, 20, .85);
   backdrop-filter: blur(10px);
-  box-shadow: 0 2px 20px rgba(36,28,16,.08);
+  box-shadow: 0 2px 24px rgba(0,0,0,.35);
   padding: 8px 0;
+  border-bottom: 1px solid rgba(200,130,10,.16);
 }
 .header-inner{
   max-width: var(--container-w);
@@ -176,8 +199,8 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   transition: background .35s ease, border-color .35s ease;
 }
 .site-header.is-scrolled .nav-toggle{
-  background: rgba(200,130,10,.1);
-  border-color: rgba(200,130,10,.3);
+  background: rgba(200,130,10,.14);
+  border-color: rgba(245,200,66,.4);
 }
 .nav-toggle span{
   display: block;
@@ -188,7 +211,6 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   border-radius: 2px;
   transition: transform .3s ease, opacity .3s ease, background .3s ease;
 }
-.site-header.is-scrolled .nav-toggle span{ background: #241C10; }
 .nav-toggle[aria-expanded="true"] span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
 .nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity: 0; }
 .nav-toggle[aria-expanded="true"] span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
@@ -475,15 +497,15 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   overflow: hidden;
   box-shadow: 0 24px 50px rgba(0,0,0,.45);
   border: 1px solid var(--border-light);
-  background: var(--surface);
+  background: #FDF8EC;
 }
 .mock-browser-bar{
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 12px 16px;
-  background: var(--bg-light-alt);
-  border-bottom: 1px solid var(--border-light);
+  background: #F3E7CB;
+  border-bottom: 1px solid rgba(200,130,10,.22);
 }
 .mock-browser-bar span{
   width: 10px; height: 10px; border-radius: 50%;
@@ -493,11 +515,11 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 .mock-browser-url{
   margin-left: 12px;
   font-size: .8rem;
-  color: var(--ink-soft);
-  background: var(--surface);
+  color: var(--mock-ink-soft);
+  background: #FDF8EC;
   padding: 4px 12px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--border-light);
+  border: 1px solid rgba(200,130,10,.22);
 }
 .mock-browser-body{
   aspect-ratio: 16/11;
@@ -509,12 +531,12 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   background:
     repeating-linear-gradient(135deg, rgba(200,130,10,.05) 0 2px, transparent 2px 14px),
     linear-gradient(160deg, #FDF8EC, #F3E7CB);
-  color: var(--text-beige-muted);
+  color: var(--mock-ink-soft);
   text-align: center;
   padding: 20px;
 }
 .icon-camera{ font-size: 2.6rem; color: var(--gold-deep); opacity: .6; }
-.mock-browser-body p{ font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--ink-soft); }
+.mock-browser-body p{ font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--mock-ink-soft); }
 .mock-browser-note{ font-size: .82rem; font-style: italic; color: var(--text-beige-muted); }
 
 .quote{
@@ -594,7 +616,7 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 }
 .card:hover{
   transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(36,28,16,.12);
+  box-shadow: 0 22px 46px rgba(0,0,0,.5);
 }
 .card-icon{
   width: 52px; height: 52px;
@@ -620,7 +642,7 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 
 .card-featured{
   border: 1.5px solid var(--gold-deep);
-  background: linear-gradient(180deg, var(--surface), var(--bg-light-alt));
+  background: linear-gradient(165deg, rgba(245,200,66,.08), var(--surface) 55%);
   position: relative;
 }
 @media (min-width: 700px) and (max-width: 1049px){
@@ -707,11 +729,11 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   box-shadow: var(--shadow-soft);
   transition: transform .3s ease, box-shadow .3s ease;
 }
-.price-card:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(36,28,16,.12); }
+.price-card:hover{ transform: translateY(-6px); box-shadow: 0 22px 46px rgba(0,0,0,.5); }
 
 .price-card-featured{
   border: 2px solid var(--gold-deep);
-  background: linear-gradient(180deg, #FFFDF6, var(--surface));
+  background: linear-gradient(165deg, rgba(245,200,66,.1), var(--surface) 55%);
   box-shadow: var(--shadow-gold);
   position: relative;
 }

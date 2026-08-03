@@ -44,13 +44,23 @@
 
   /* Scroll reveal */
   var revealEls = document.querySelectorAll("[data-reveal]");
+
+  function markRevealDone(el) {
+    el.classList.add("reveal-done");
+  }
+
   if ("IntersectionObserver" in window && revealEls.length) {
     var observer = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
+            var el = entry.target;
+            el.classList.add("is-visible");
+            el.addEventListener("animationend", function handler() {
+              markRevealDone(el);
+              el.removeEventListener("animationend", handler);
+            });
+            observer.unobserve(el);
           }
         });
       },
@@ -58,7 +68,10 @@
     );
     revealEls.forEach(function (el) { observer.observe(el); });
   } else {
-    revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+    revealEls.forEach(function (el) {
+      el.classList.add("is-visible");
+      markRevealDone(el);
+    });
   }
 
   /* Liquid metal ripple effect on click */
