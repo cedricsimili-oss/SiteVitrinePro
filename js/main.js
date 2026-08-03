@@ -21,7 +21,7 @@
       var span = document.createElement("span");
       span.className = "char-reveal" + (isGold ? " char-gold" : "");
       span.style.setProperty("--char-index", charIndex);
-      span.textContent = ch === " " ? " " : ch;
+      span.textContent = ch;
       line.appendChild(span);
       charIndex++;
     }
