@@ -463,7 +463,40 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   color: var(--text-on-dark);
   margin-bottom: 24px;
 }
-.hero-title-line{ display: block; }
+.hero-title-line{ display: block; min-height: 1.1em; }
+
+/* effet machine à écrire — voir js/main.js pour le découpage en lettres */
+.char-reveal{ opacity: 0; }
+.char-gold{ color: var(--gold-mid); }
+.hero-title.is-typing .char-reveal{
+  animation: revealChar .15s ease-out forwards;
+  animation-delay: calc(var(--char-index, 0) * 32ms);
+}
+@keyframes revealChar{
+  from{ opacity: 0; }
+  to{ opacity: 1; }
+}
+.typing-cursor{
+  display: inline-block;
+  width: 3px;
+  height: .78em;
+  margin-left: 3px;
+  background: var(--gold-light);
+  opacity: 0;
+  vertical-align: -0.08em;
+}
+.typing-cursor.cursor-active{
+  animation: cursorBlink .9s steps(1) infinite;
+}
+.typing-cursor.cursor-fade{
+  animation: none;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+@keyframes cursorBlink{
+  0%, 50%{ opacity: 1; }
+  50.01%, 100%{ opacity: 0; }
+}
 .gold-text{
   background: linear-gradient(120deg, var(--gold-light), var(--gold-deep));
   -webkit-background-clip: text;
@@ -530,35 +563,29 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 }
 
 /* lueur dorée ambiante — reprend le traitement du hero sur les autres
-   sections, pour une seule et même atmosphère sombre/dorée sur tout le site */
-.section-glow{ position: relative; overflow: hidden; }
-.section-glow .container{ position: relative; z-index: 1; }
-.ambient-glow{
-  position: absolute;
-  width: 620px; height: 620px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(232,160,32,.11), transparent 65%);
-  pointer-events: none;
-  z-index: 0;
+   sections, pour une seule et même atmosphère sombre/dorée sur tout le site.
+   Peinte en `background-image` (pas un div positionné + overflow:hidden) :
+   un cercle surdimensionné et coupé par overflow:hidden rognait aussi le
+   glissement horizontal des cartes (.reveal-card-x) qui vivent dans la même
+   section — un `background` reste toujours cadré à la boîte de l'élément
+   sans avoir besoin de clipper le reste du contenu. */
+.section-glow{ position: relative; }
+.section-glow.glow-left{
+  background-image: radial-gradient(circle 310px at -4% -6%, rgba(232,160,32,.14), transparent 70%);
 }
-.ambient-glow-left{ top: -8%; left: -14%; }
-.ambient-glow-right{ top: 15%; right: -14%; }
+.section-glow.glow-right{
+  background-image: radial-gradient(circle 310px at 104% 20%, rgba(232,160,32,.14), transparent 70%);
+}
 
 /* ==========================================================================
    Proof section — reste dans l'ambiance sombre/dorée du hero
    ========================================================================== */
 .proof{
   position: relative;
-  background: linear-gradient(180deg, var(--bg-dark-card) 0%, var(--bg-dark-card-2) 55%, var(--bg-dark-card-2) 100%);
+  background:
+    radial-gradient(circle 320px at 104% 14%, rgba(232,160,32,.16), transparent 70%),
+    linear-gradient(180deg, var(--bg-dark-card) 0%, var(--bg-dark-card-2) 55%, var(--bg-dark-card-2) 100%);
   padding-top: 10px;
-  overflow: hidden;
-}
-.proof-glow{
-  position: absolute;
-  top: 10%; right: -10%;
-  width: 640px; height: 640px;
-  background: radial-gradient(circle, rgba(232,160,32,.16), transparent 65%);
-  pointer-events: none;
 }
 .proof::after{
   content: "";

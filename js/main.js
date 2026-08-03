@@ -9,6 +9,60 @@
 
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  /* Titre du hero : effet machine à écrire au chargement de la page.
+     Découpe chaque ligne en spans par lettre (en conservant la mise en
+     couleur dorée de .gold-text) et anime leur opacité en cascade rapide. */
+  var heroTitle = document.getElementById("heroTitle");
+  if (heroTitle) {
+    var lines = heroTitle.querySelectorAll(".hero-title-line");
+    var charIndex = 0;
+
+    function appendChar(line, ch, isGold) {
+      var span = document.createElement("span");
+      span.className = "char-reveal" + (isGold ? " char-gold" : "");
+      span.style.setProperty("--char-index", charIndex);
+      span.textContent = ch === " " ? " " : ch;
+      line.appendChild(span);
+      charIndex++;
+    }
+
+    function walkNode(line, node, isGold) {
+      if (node.nodeType === 3) {
+        node.textContent.split("").forEach(function (ch) {
+          appendChar(line, ch, isGold);
+        });
+      } else if (node.nodeType === 1) {
+        var gold = isGold || node.classList.contains("gold-text");
+        Array.prototype.slice.call(node.childNodes).forEach(function (child) {
+          walkNode(line, child, gold);
+        });
+      }
+    }
+
+    lines.forEach(function (line, lineIndex) {
+      var originalNodes = Array.prototype.slice.call(line.childNodes);
+      line.textContent = "";
+      if (lineIndex > 0) charIndex += 3; // petite pause entre les deux lignes
+      originalNodes.forEach(function (node) { walkNode(line, node, false); });
+    });
+
+    var cursor = document.createElement("span");
+    cursor.className = "typing-cursor";
+    lines[lines.length - 1].appendChild(cursor);
+
+    var CHAR_STEP_MS = 32;
+    var totalTypingMs = charIndex * CHAR_STEP_MS;
+
+    requestAnimationFrame(function () {
+      heroTitle.classList.add("is-typing");
+    });
+    setTimeout(function () { cursor.classList.add("cursor-active"); }, totalTypingMs + 100);
+    setTimeout(function () {
+      cursor.classList.remove("cursor-active");
+      cursor.classList.add("cursor-fade");
+    }, totalTypingMs + 1500);
+  }
+
   /* Header state on scroll + back-to-top visibility */
   function onScroll() {
     var scrolled = window.scrollY > 60;
