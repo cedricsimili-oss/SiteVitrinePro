@@ -625,25 +625,27 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 }
 
 .card{
-  background: linear-gradient(165deg, rgba(245,200,66,.04), var(--surface) 55%);
-  border: 1px solid var(--border-light);
+  background: linear-gradient(160deg, rgba(232,160,32,.22), rgba(200,130,10,.05) 45%, var(--surface) 75%);
+  border: 1px solid rgba(232,160,32,.4);
   border-radius: var(--radius-lg);
   padding: 32px 28px;
-  box-shadow: var(--shadow-soft);
-  transition: transform .3s ease, box-shadow .3s ease;
+  box-shadow: var(--shadow-soft), 0 0 50px rgba(200,130,10,.07);
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
 .card:hover{
   transform: translateY(-6px);
-  box-shadow: 0 22px 46px rgba(0,0,0,.5);
+  border-color: rgba(245,200,66,.6);
+  box-shadow: 0 22px 46px rgba(0,0,0,.5), 0 0 60px rgba(200,130,10,.12);
 }
 .card-icon{
   width: 52px; height: 52px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(232,160,32,.16), rgba(255,107,53,.12));
-  color: var(--orange-deep);
+  background: linear-gradient(135deg, var(--gold-mid), var(--orange-deep));
+  color: #2A1400;
   font-size: 1.5rem;
   margin-bottom: 18px;
+  box-shadow: 0 6px 16px rgba(200,130,10,.3);
 }
 .card h3{
   font-size: 1.25rem;
@@ -659,8 +661,9 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 .card p + p{ margin-top: 12px; }
 
 .card-featured{
-  border: 1.5px solid var(--gold-deep);
-  background: linear-gradient(165deg, rgba(245,200,66,.08), var(--surface) 55%);
+  border: 1.5px solid var(--gold-light);
+  background: linear-gradient(160deg, rgba(245,200,66,.3), rgba(200,130,10,.06) 45%, var(--surface) 78%);
+  box-shadow: var(--shadow-soft), 0 0 60px rgba(200,130,10,.14);
   position: relative;
 }
 @media (min-width: 700px) and (max-width: 1049px){
@@ -740,19 +743,23 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
 .price-card{
   display: flex;
   flex-direction: column;
-  background: linear-gradient(165deg, rgba(245,200,66,.04), var(--surface) 55%);
-  border: 1px solid var(--border-light);
+  background: linear-gradient(160deg, rgba(232,160,32,.22), rgba(200,130,10,.05) 45%, var(--surface) 75%);
+  border: 1px solid rgba(232,160,32,.4);
   border-radius: var(--radius-lg);
   padding: 36px 30px;
-  box-shadow: var(--shadow-soft);
-  transition: transform .3s ease, box-shadow .3s ease;
+  box-shadow: var(--shadow-soft), 0 0 50px rgba(200,130,10,.07);
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
-.price-card:hover{ transform: translateY(-6px); box-shadow: 0 22px 46px rgba(0,0,0,.5); }
+.price-card:hover{
+  transform: translateY(-6px);
+  border-color: rgba(245,200,66,.6);
+  box-shadow: 0 22px 46px rgba(0,0,0,.5), 0 0 60px rgba(200,130,10,.12);
+}
 
 .price-card-featured{
-  border: 2px solid var(--gold-deep);
-  background: linear-gradient(165deg, rgba(245,200,66,.1), var(--surface) 55%);
-  box-shadow: var(--shadow-gold);
+  border: 2px solid var(--gold-light);
+  background: linear-gradient(160deg, rgba(245,200,66,.32), rgba(200,130,10,.06) 45%, var(--surface) 78%);
+  box-shadow: var(--shadow-gold), 0 0 70px rgba(200,130,10,.16);
   position: relative;
 }
 @media (min-width: 900px){
@@ -793,8 +800,8 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
    ========================================================================== */
 .faq-list{ display: flex; flex-direction: column; gap: 14px; }
 .faq-item{
-  background: linear-gradient(165deg, rgba(245,200,66,.035), var(--surface) 55%);
-  border: 1px solid var(--border-light);
+  background: linear-gradient(160deg, rgba(232,160,32,.14), rgba(200,130,10,.04) 45%, var(--surface) 75%);
+  border: 1px solid rgba(232,160,32,.35);
   border-radius: var(--radius-md);
   padding: 6px 24px;
   box-shadow: var(--shadow-soft);
