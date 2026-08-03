@@ -106,20 +106,35 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
    survol, et une seule déclaration `transition` par élément peut gagner en
    CSS — `animation` reste totalement indépendante et ne rentre jamais en
    conflit avec ces transitions de hover.
+
+   Variantes (classe en plus de [data-reveal]) :
+   - (aucune)        : fade + montée légère — défaut (cartes, blocs de texte)
+   - .reveal-mockup   : entrée depuis la droite avec perspective 3D (preuve)
+   - .reveal-zoom     : zoom-in + pulse doré — offre mise en avant
+   - .reveal-left     : glisse depuis la gauche — items FAQ
    ========================================================================== */
 [data-reveal]{
   opacity: 0;
   transform: translateY(28px);
 }
+[data-reveal].reveal-mockup{ transform: perspective(1200px) translateX(90px) rotateY(22deg); }
+[data-reveal].reveal-zoom{ transform: scale(.92); }
+[data-reveal].reveal-left{ transform: translateX(-32px); }
+
 [data-reveal-delay="1"]{ --reveal-step: 1; }
 [data-reveal-delay="2"]{ --reveal-step: 2; }
 [data-reveal-delay="3"]{ --reveal-step: 3; }
 [data-reveal-delay="4"]{ --reveal-step: 4; }
 [data-reveal-delay="5"]{ --reveal-step: 5; }
+
 [data-reveal].is-visible{
   animation: revealUp .7s cubic-bezier(.22,.61,.36,1) forwards;
-  animation-delay: calc(var(--reveal-step, 0) * 100ms);
+  animation-delay: calc(var(--reveal-step, 0) * 130ms);
 }
+[data-reveal].reveal-mockup.is-visible{ animation-name: revealMockup; animation-duration: .9s; }
+[data-reveal].reveal-zoom.is-visible{ animation-name: revealZoomPulse; animation-duration: .95s; }
+[data-reveal].reveal-left.is-visible{ animation-name: revealLeft; animation-duration: .6s; }
+
 /* une fois l'animation terminée (voir main.js), on la désactive : tant
    qu'une animation "forwards" tient une propriété, elle prime sur toute
    autre règle (dont :hover) — ce second état rend la main au cascade normal
@@ -129,9 +144,44 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   opacity: 1;
   transform: none;
 }
+/* l'offre mise en avant garde son léger agrandissement permanent (desktop)
+   une fois le reveal terminé — transform: none l'aurait sinon annulé.
+   Spécificité volontairement égale à `.price-card-featured:hover` (définie
+   plus bas dans le fichier) : au repos c'est cette règle qui gagne (elle
+   est déclarée après la base scale(1.035)), mais au survol c'est bien
+   `:hover` qui doit primer — voir l'ordre des règles plus bas. */
+@media (min-width: 900px){
+  .price-card-featured.reveal-done{ transform: scale(1.035); }
+}
+
 @keyframes revealUp{
   from{ opacity: 0; transform: translateY(28px); }
   to{ opacity: 1; transform: translateY(0); }
+}
+@keyframes revealMockup{
+  from{ opacity: 0; transform: perspective(1200px) translateX(90px) rotateY(22deg); }
+  to{ opacity: 1; transform: perspective(1200px) translateX(0) rotateY(0deg); }
+}
+@keyframes revealLeft{
+  from{ opacity: 0; transform: translateX(-32px); }
+  to{ opacity: 1; transform: translateX(0); }
+}
+@keyframes revealZoomPulse{
+  0%{
+    opacity: 0;
+    transform: scale(.92);
+    box-shadow: var(--shadow-gold), 0 0 0 rgba(232,160,32,0), inset 0 1px 0 rgba(245,200,66,.25);
+  }
+  55%{
+    opacity: 1;
+    transform: scale(1.045);
+    box-shadow: var(--shadow-gold), 0 0 85px rgba(232,160,32,.6), inset 0 1px 0 rgba(245,200,66,.3);
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: var(--shadow-gold), 0 0 50px rgba(200,130,10,.34), inset 0 1px 0 rgba(245,200,66,.25);
+  }
 }
 
 /* ==========================================================================
@@ -390,6 +440,7 @@ svg{ fill: currentColor; width: 1em; height: 1em; }
   color: var(--text-on-dark);
   margin-bottom: 24px;
 }
+.hero-title-line{ display: block; }
 .gold-text{
   background: linear-gradient(120deg, var(--gold-light), var(--gold-deep));
   -webkit-background-clip: text;
