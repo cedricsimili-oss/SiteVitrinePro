@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cedricsimili-oss.github.io/SiteVitrinePro/sitemap.xml
